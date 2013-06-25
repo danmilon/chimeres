@@ -1,0 +1,80 @@
+#!/usr/bin/env node
+var readline = require('readline')
+  , program = require('commander')
+  , chimeres = require('../chimeres')
+
+require('colors')
+
+program
+  .option('-n, --name <name>', 'Your nickname (required for chat)')
+
+program
+  .command('chat')
+  .description('join chimeres radio chat')
+  .action(function () {
+    program._command = 'chat'
+  })
+
+program
+  .command('schedule')
+  .description('get the schedule of the day')
+  .action(function () {
+    program._command = 'schedule'
+  })
+
+program.parse(process.argv)
+
+if (program._command === 'chat') {
+  if (!program.name) {
+    console.log(program.helpInformation())
+    process.exit(1)
+  }
+
+  var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  })
+
+  rl.setPrompt('(' + program.name + ')> ')
+
+  function log(shout) {
+    console.log('\r' + shout.date.italic + ' ' + shout.time.italic + '\t ' + shout.sender.bold.yellow + ': ' + shout.message)
+
+    rl.prompt()
+  }
+
+  rl.on('line', function (message) {
+    var shout = {
+      name: program.name,
+      message: message
+    }
+
+    chat.post(shout, function (err) {
+      if (err) {
+        throw err
+      }
+    })
+  })
+
+  var chat = chimeres.Chat()
+
+  chat.on('initRefresh', function () {
+    rl.prompt()
+  })
+
+  chat.on('message', log)
+}
+else if (program._command === 'schedule') {
+  chimeres.schedule(function (err, schedule) {
+    if (err) {
+      throw err
+    }
+
+    for (var i = 0; i < schedule.length; i++) {
+      console.log(schedule[i])
+    }
+  })
+}
+else {
+  console.log(program.helpInformation())
+}

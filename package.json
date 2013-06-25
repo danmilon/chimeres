@@ -1,0 +1,32 @@
+{
+  "name": "chimeres",
+  "version": "0.1.0",
+  "description": "chimeres.gr client",
+  "main": "chimeres.js",
+  "dependencies": {
+    "cheerio": "~0.12.0",
+    "request": "~2.21.0",
+    "colors": "~0.6.0-1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "chimeres": "bin/chimeres"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danmilon/chimeres.git"
+  },
+  "keywords": [
+    "chimeres.gr",
+    "radio",
+    "chat"
+  ],
+  "author": "Dan Milon <danmilon@gmail.com>",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/danmilon/chimeres/issues"
+  }
+}
